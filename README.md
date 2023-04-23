@@ -5,14 +5,19 @@ Pre-training of Graph Augmented Transformers for Medication Recommendation
 G-Bert combined the power of **G**raph Neural Networks and **BERT** (Bidirectional Encoder Representations from Transformers) for medical code representation and medication recommendation. We use the graph neural networks (GNNs) to represent the structure information of medical codes from a medical ontology. Then we integrate the GNN representation into a transformer-based visit encoder and pre-train it on single-visit EHR data. The pre-trained visit encoder and representation can be fine-tuned for downstream medical prediction tasks. Our model is the first to bring the language model pre-training schema into the healthcare domain and it achieved state-of-the-art performance on the medication recommendation task.
 
 ## Requirements
-- pytorch>=0.4
-- python>=3.5
+- pytorch>=0.4 (tested with torch==2.0.0 and GPU cuda118)
+- python>=3.9
+- virtualenv
 - torch_geometric==1.0.3
+- tensorboardX dill pandas tqdm scikit-learn wheel
+- torch-scatter torch-sparse torch-cluster torch-spline-conv ( from https://data.pyg.org/whl/torch-2.0.0+cu118.html )
 
 ## Guide
 We list the structure of this repo as follows:
 ```latex
 .
+├── [636B]  setup.sh
+├── [1.3K]  scatter-fix.py
 ├── [4.0K]  code/
 │   ├── [ 13K]  bert_models.py % transformer models
 │   ├── [5.9K]  build_tree.py % build ontology
@@ -48,12 +53,33 @@ We list the structure of this repo as follows:
 ### Preprocessing Data
 We have released the preprocessing codes named data/EDA.ipynb to process data using raw files from MIMIC-III dataset. You can download data files from [MIMIC](https://mimic.physionet.org/gettingstarted/dbsetup/) and get necessary mapping files from [GAMENet](https://github.com/sjy1203/GAMENet).
 
-### Quick Test
-To validate the performance of G-Bert, you can run the following script since we have provided the trained model binary file and well-preprocessed data.
+### Environment Setup
+To setup the environment, run the bash file below:
 ```bash
-cd code/
-python run_gbert.py --model_name GBert-predict --use_pretrain --pretrain_dir ../saved/GBert-predict --graph
+./setup.sh
 ```
+This file creates a virtualenv with python version 3.9, install the pip packages listed above, and moves the scatter-fix.py into the torch_geometric pip package.
+
+### To the run the Experiments
+Run the bash file below:
+```bash
+./run_experiments.sh
+```
+The code will generate 5 different output directories for each of the model. The naming is of the directory is in this format GBert-pretraining-<MODEL_NUMBER> and GBert-predict-<MODEL_NUMBER>, they are referenced in the order below:
+
+```latex
+ ---------------------------------------------------------
+| Model Numebr | Graph | Pretrain | Jaccard | PR-AUC | F1 |
+ ---------------------------------------------------------
+|      1       |       |          |         |        |    |
+|      2       |       |          |         |        |    |
+|      3       |       |          |         |        |    |
+|      4       |       |          |         |        |    |
+|      5       |       |          |         |        |    |
+ ---------------------------------------------------------
+```
+
+
 ## Cite 
 
 Please cite our paper if you find this code helpful:
