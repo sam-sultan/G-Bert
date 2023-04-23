@@ -25,7 +25,8 @@ from predictive_models import GBERT_Predict
 
 logging.basicConfig(format='%(asctime)s - %(levelname)s - %(name)s -   %(message)s',
                     datefmt='%m/%d/%Y %H:%M:%S',
-                    level=logging.INFO)
+                    level=logging.ERROR #logging.INFO
+                    )
 logger = logging.getLogger(__name__)
 
 
@@ -482,6 +483,7 @@ def main():
                 for k, v in acc_container.items():
                     writer.add_scalar(
                         'test/{}'.format(k), v, 0)
+                    logger.error('test {} : {}'.format(k, v))
 
             return acc_container
 
