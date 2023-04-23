@@ -31,6 +31,9 @@ logging.basicConfig(format='%(asctime)s - %(levelname)s - %(name)s -   %(message
                     )
 logger = logging.getLogger(__name__)
 
+for handler in logger.handlers:
+    handler.setLevel(logging.ERROR)
+
 
 class Voc(object):
     def __init__(self):
