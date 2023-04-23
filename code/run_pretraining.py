@@ -207,9 +207,15 @@ def load_dataset(args):
     #     EHRDataset(load_ids(data_multi, ids_file[1]), tokenizer, max_seq_len), \
     #     EHRDataset(load_ids(data_multi, ids_file[1]), tokenizer, max_seq_len), \
     #     EHRDataset(load_ids(data_multi, ids_file[2]), tokenizer, max_seq_len)
+
+    # Allow/Discard single visits
+    datas = pd.concat([data_single, load_ids(data_multi, ids_file[0]) ]) if args.use_single else load_ids(data_multi, ids_file[0])
+
+    print(datas.shape)
+    exit()
+
     return tokenizer, \
-        EHRDataset(pd.concat([data_single, load_ids(
-            data_multi, ids_file[0])]), tokenizer, max_seq_len), \
+        EHRDataset(datas, tokenizer, max_seq_len), \
         EHRDataset(load_ids(data_multi, ids_file[1]), tokenizer, max_seq_len), \
         EHRDataset(load_ids(data_multi, ids_file[2]), tokenizer, max_seq_len)
 
@@ -240,6 +246,10 @@ def main():
                         default=False,
                         action='store_true',
                         help="if use ontology embedding")
+    parser.add_argument("--use_single",
+                        default=True,
+                        action='store_true',
+                        help="if use single visits")
     parser.add_argument("--graph",
                         default=False,
                         action='store_true',

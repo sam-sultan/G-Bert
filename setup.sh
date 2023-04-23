@@ -13,7 +13,6 @@ source venv/bin/activate \
   && pip install dill pandas tqdm tensorboardX \
   && pip install scikit-learn torch_geometric==1.0.3 \
   && pip install torch-scatter torch-sparse torch-cluster torch-spline-conv -f https://data.pyg.org/whl/torch-2.0.0+cu118.html
-
-#git clone https://github.com/sam-sultan/G-Bert.git
+  
 
 mv scatter-fix.py venv/lib/python3.9/site-packages/torch_geometric/utils/scatter.py
