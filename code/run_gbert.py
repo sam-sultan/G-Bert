@@ -482,7 +482,7 @@ def main():
 
                 with open(os.path.join(args.output_dir, 'result.txt'), 'w', encoding='utf-8') as fout:
                     for k, v in acc_container.items():
-                        fout.write( 'test {}: {}'.format(k, v) )
+                        fout.write( 'test {}: {}\n'.format(k, v) )
 
                 for k, v in acc_container.items():
                     writer.add_scalar(
