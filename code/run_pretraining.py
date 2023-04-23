@@ -27,8 +27,7 @@ from sklearn.metrics import f1_score, roc_auc_score, average_precision_score
 
 logging.basicConfig(format='%(asctime)s - %(levelname)s - %(name)s -   %(message)s',
                     datefmt='%m/%d/%Y %H:%M:%S',
-                    level=logging.INFO
-                    )
+                    level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
@@ -161,14 +160,12 @@ class EHRDataset(Dataset):
         """
         input_ids = self.tokenizer.convert_tokens_to_ids(input_tokens)
 
-        """
         if cur_id < 5:
             logger.info("*** Example ***")
             logger.info("input tokens: %s" % " ".join(
                 [str(x) for x in input_tokens]))
             logger.info("input_ids: %s" %
                         " ".join([str(x) for x in input_ids]))
-        """
 
         cur_tensors = (torch.tensor(input_ids, dtype=torch.long).view(-1, self.seq_len),
                        torch.tensor(y_dx, dtype=torch.float),
@@ -372,11 +369,9 @@ def main():
     if args.do_train:
         writer = SummaryWriter(args.output_dir)
 
-        """
         logger.info("***** Running training *****")
         logger.info("  Num examples = %d", len(train_dataset))
         logger.info("  Batch size = %d", 1)
-        """
 
         dx_acc_best, rx_acc_best = 0, 0
         acc_name = 'prauc'
@@ -413,8 +408,8 @@ def main():
             global_step += 1
 
             if args.do_eval:
-                #print('')
-                #logger.info("***** Running eval *****")
+                print('')
+                logger.info("***** Running eval *****")
                 model.eval()
                 dx2dx_y_preds = []
                 rx2dx_y_preds = []

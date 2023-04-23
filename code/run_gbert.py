@@ -25,8 +25,7 @@ from predictive_models import GBERT_Predict
 
 logging.basicConfig(format='%(asctime)s - %(levelname)s - %(name)s -   %(message)s',
                     datefmt='%m/%d/%Y %H:%M:%S',
-                    level=logging.INFO
-                    )
+                    level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
@@ -166,7 +165,6 @@ class EHRDataset(Dataset):
                 map(lambda x: self.tokenizer.rx_voc_multi.word2idx[x], tokens))] = 1
             output_rx_labels.append(tmp_labels)
 
-        """
         if cur_id < 5:
             logger.info("*** Example ***")
             logger.info("subject_id: %s" % subject_id)
@@ -174,7 +172,6 @@ class EHRDataset(Dataset):
                 [str(x) for x in input_tokens]))
             logger.info("input_ids: %s" %
                         " ".join([str(x) for x in input_ids]))
-        """
 
         assert len(input_ids) == (self.seq_len *
                                   2 * len(self.records[subject_id]))
@@ -370,11 +367,9 @@ def main():
     if args.do_train:
         writer = SummaryWriter(args.output_dir)
 
-        """
         logger.info("***** Running training *****")
         logger.info("  Num examples = %d", len(train_dataset))
         logger.info("  Batch size = %d", 1)
-        """
 
         dx_acc_best, rx_acc_best = 0, 0
         acc_name = 'prauc'
@@ -410,8 +405,8 @@ def main():
             global_step += 1
 
             if args.do_eval:
-                #print('')
-                #logger.info("***** Running eval *****")
+                print('')
+                logger.info("***** Running eval *****")
                 model.eval()
                 dx_y_preds = []
                 dx_y_trues = []
@@ -484,10 +479,14 @@ def main():
 
             # save report
             if args.do_train:
+
+                with open(os.path.join(args.output_dir, 'result.txt'), 'w', encoding='utf-8') as fout:
+                    for k, v in acc_container.items():
+                        fout.write( 'test {}: {}'.format(k, v) )
+
                 for k, v in acc_container.items():
                     writer.add_scalar(
                         'test/{}'.format(k), v, 0)
-                    print('test {} : {}'.format(k, v))
 
             return acc_container
 
